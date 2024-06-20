@@ -1,5 +1,6 @@
 package com.unimed.poc.services;
 
+import com.unimed.poc.exceptions.StudentNotFoundException;
 import com.unimed.poc.models.Student;
 import com.unimed.poc.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class StudentService {
     }
 
     public Mono<Student> getStudentById(Long id) {
-        return studentRepository.findById(id);
+        return studentRepository.findById(id)
+                .switchIfEmpty(Mono.error(new StudentNotFoundException("Student with ID " + id + " not found")));
     }
 
     public Mono<Student> createStudent(Student student) {

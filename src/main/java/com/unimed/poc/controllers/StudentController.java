@@ -3,7 +3,10 @@ package com.unimed.poc.controllers;
 import com.unimed.poc.models.Student;
 import com.unimed.poc.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,13 +32,19 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Student> getStudentById(@PathVariable("id") Long id) {
-        return studentService.getStudentById(id);
+    public Mono<ResponseEntity<Student>> getStudentById(@PathVariable Long id) {
+        return studentService.getStudentById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting student")));
     }
 
     @PutMapping("/{id}")
-    public Mono<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student) {
-        return studentService.updateStudent(id, student);
+    public Mono<ResponseEntity<Student>> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating student")));
     }
 
     @DeleteMapping("/{id}")
