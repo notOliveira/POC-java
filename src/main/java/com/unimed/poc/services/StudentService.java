@@ -32,7 +32,6 @@ public class StudentService {
     }
 
     public Mono<Student> updateStudent(Long id, Student student) {
-        student.setId(id); // Ensure the correct ID is set for update
         return studentRepository.save(student);
     }
 
