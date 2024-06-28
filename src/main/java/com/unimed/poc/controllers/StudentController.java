@@ -1,12 +1,12 @@
 package com.unimed.poc.controllers;
 
+import com.unimed.poc.models.Classroom;
 import com.unimed.poc.models.Student;
+import com.unimed.poc.services.ClassroomService;
 import com.unimed.poc.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,10 +15,12 @@ import reactor.core.publisher.Mono;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ClassroomService classroomService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, ClassroomService classroomService) {
         this.studentService = studentService;
+        this.classroomService = classroomService;
     }
 
     @GetMapping("/")
@@ -26,7 +28,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public Mono<Student> createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
@@ -50,5 +52,10 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public Mono<Void> deleteStudent(@PathVariable("id") Long id) {
         return studentService.deleteStudent(id);
+    }
+
+    @PostMapping("/classrooms")
+    public Flux<Classroom> getStudentClassrooms(@PathVariable Long id) {
+        return classroomService.getAllClassrooms();
     }
 }

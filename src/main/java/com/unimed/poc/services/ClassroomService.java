@@ -5,6 +5,7 @@ import com.unimed.poc.models.Classroom;
 import com.unimed.poc.repositories.ClassroomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,11 +32,17 @@ public class ClassroomService {
         return classroomRepository.save(classroom);
     }
 
-    public Mono<Classroom> updateClassroom(Long id, Classroom classroom) {
+    public Mono<Classroom> updateClassroom(@PathVariable Long id, Classroom classroom) {
         return classroomRepository.save(classroom);
     }
 
     public Mono<Void> deleteClassroom(Long id) {
         return classroomRepository.deleteById(id);
+    }
+
+    public Flux<Classroom> getClassroomsByStudentId(Long studentId) {
+        return classroomRepository.findAll()
+                .filter(classroom -> classroom.getStudents().stream()
+                        .anyMatch(student -> student.getId().equals(studentId)));
     }
 }

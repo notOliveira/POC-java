@@ -47,7 +47,12 @@ public class ClassroomController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteStudent(@PathVariable("id") Long id) {
+    public Mono<Void> deleteClassroom(@PathVariable("id") Long id) {
         return classroomService.deleteClassroom(id);
+    }
+
+    @GetMapping("/student/{id}")
+    public Flux<Classroom> findClassroomsOfStudent(Long studentId) {
+        return classroomService.getClassroomsByStudentId(studentId);
     }
 }
