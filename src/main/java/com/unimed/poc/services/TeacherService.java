@@ -5,7 +5,6 @@ import com.unimed.poc.models.Teacher;
 import com.unimed.poc.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,8 +14,8 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
 
     @Autowired
-    public TeacherService(TeacherRepository TeacherRepository) {
-        this.teacherRepository = TeacherRepository;
+    public TeacherService(TeacherRepository teacherRepository) {
+        this.teacherRepository = teacherRepository;
     }
 
     public Flux<Teacher> getAllTeachers() {
@@ -32,7 +31,8 @@ public class TeacherService {
         return teacherRepository.save(teacher);
     }
 
-    public Mono<Teacher> updateTeacher(@PathVariable Long id, Teacher teacher) {
+    public Mono<Teacher> updateTeacher(Long id, Teacher teacher) {
+        teacher.setId(id);
         return teacherRepository.save(teacher);
     }
 

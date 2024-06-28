@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/teacher")
+@RequestMapping("/api/teachers")
 public class TeacherController {
 
     private final TeacherService teacherService;
@@ -33,16 +33,16 @@ public class TeacherController {
     public Mono<ResponseEntity<Teacher>> getTeacherById(@PathVariable Long id) {
         return teacherService.getTeacherById(id)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error getting teacher")));
     }
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<Teacher>> updateTeacher(@PathVariable Long id, @RequestBody Teacher teacher) {
         return teacherService.updateTeacher(id, teacher)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error updating teacher")));
     }
 
     @DeleteMapping("/{id}")

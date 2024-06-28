@@ -9,8 +9,8 @@ import java.util.List;
 @Setter
 public class Classroom {
     @Id
-    public long id;
-    public String name;
-    public Teacher teacher;
-    public List<Student> students;
+    private Long id;
+    private String name;
+    private Teacher teacher;
+    private List<Student> students;
 }

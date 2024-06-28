@@ -37,16 +37,16 @@ public class StudentController {
     public Mono<ResponseEntity<Student>> getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error getting student")));
     }
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<Student>> updateStudent(@PathVariable Long id, @RequestBody Student student) {
         return studentService.updateStudent(id, student)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error updating student")));
     }
 
     @DeleteMapping("/{id}")
@@ -54,8 +54,8 @@ public class StudentController {
         return studentService.deleteStudent(id);
     }
 
-    @PostMapping("/classrooms")
+    @GetMapping("/{id}/classrooms")
     public Flux<Classroom> getStudentClassrooms(@PathVariable Long id) {
-        return classroomService.getAllClassrooms();
+        return classroomService.getClassroomsByStudentId(id);
     }
 }

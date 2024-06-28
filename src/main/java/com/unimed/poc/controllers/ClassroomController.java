@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-
 @RestController
-@RequestMapping("/api/classroom")
+@RequestMapping("/api/classrooms")
 public class ClassroomController {
 
     private final ClassroomService classroomService;
@@ -34,16 +33,16 @@ public class ClassroomController {
     public Mono<ResponseEntity<Classroom>> getClassroomById(@PathVariable Long id) {
         return classroomService.getClassroomById(id)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error getting classroom")));
     }
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<Classroom>> updateClassroom(@PathVariable Long id, @RequestBody Classroom classroom) {
         return classroomService.updateClassroom(id, classroom)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
-//                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating student")));
+                .defaultIfEmpty(ResponseEntity.notFound().build())
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error updating classroom")));
     }
 
     @DeleteMapping("/{id}")
@@ -52,7 +51,7 @@ public class ClassroomController {
     }
 
     @GetMapping("/student/{id}")
-    public Flux<Classroom> findClassroomsOfStudent(Long studentId) {
+    public Flux<Classroom> findClassroomsOfStudent(@PathVariable Long studentId) {
         return classroomService.getClassroomsByStudentId(studentId);
     }
 }
