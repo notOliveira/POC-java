@@ -10,4 +10,5 @@ import reactor.core.publisher.Flux;
 public interface ClassroomRepository extends ReactiveCrudRepository<Classroom, Long> {
     @Query("SELECT * FROM Classroom c WHERE EXISTS (SELECT 1 FROM Classroom_Student cs WHERE c.id = cs.classroom_id AND cs.student_id = :studentId)")
     Flux<Classroom> findByStudentId(Long studentId);
+
 }
