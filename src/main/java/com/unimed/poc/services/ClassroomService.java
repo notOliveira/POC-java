@@ -2,11 +2,15 @@ package com.unimed.poc.services;
 
 import com.unimed.poc.exceptions.ClassroomNotFoundException;
 import com.unimed.poc.models.Classroom;
+import com.unimed.poc.models.Student;
 import com.unimed.poc.repositories.ClassroomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassroomService {
@@ -41,8 +45,7 @@ public class ClassroomService {
     }
 
     public Flux<Classroom> getClassroomsByStudentId(Long studentId) {
-        return classroomRepository.findAll()
-                .filter(classroom -> classroom.getStudents().stream()
-                        .anyMatch(student -> student.getId().equals(studentId)));
+        return classroomRepository.findByStudentId(studentId)
+                .switchIfEmpty(Flux.error(new ClassroomNotFoundException("No classrooms found for student ID: " + studentId)));
     }
 }

@@ -50,8 +50,8 @@ public class ClassroomController {
         return classroomService.deleteClassroom(id);
     }
 
-    @GetMapping("/student/{id}")
-    public Flux<Classroom> findClassroomsOfStudent(@PathVariable Long studentId) {
+    @GetMapping("/student/{studentId}")
+    public Flux<Classroom> findClassroomsByStudentId(@PathVariable Long studentId) {
         return classroomService.getClassroomsByStudentId(studentId);
     }
 }
