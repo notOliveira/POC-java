@@ -36,7 +36,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Mono<Void> deleteStudent(Long id) {
-        return studentRepository.deleteById(id);
+    public Mono<String> deleteStudent(Long id) {
+        return studentRepository.deleteById(id)
+                .thenReturn("Student " + id + " deleted successfully!");
     }
 }

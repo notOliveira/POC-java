@@ -25,12 +25,12 @@ public class ClassroomController {
         return classroomService.getClassroomById(id);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public Flux<Classroom> getAllClassrooms() {
         return classroomService.getAllClassrooms();
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Classroom> createClassroom(@RequestBody Classroom classroom) {
         return classroomService.createClassroom(classroom);

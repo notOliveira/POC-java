@@ -28,7 +28,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @PostMapping("/create")
+    @PostMapping("/new")
     public Mono<Student> createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
@@ -50,7 +50,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> deleteStudent(@PathVariable("id") Long id) {
+    public Mono<String> deleteStudent(@PathVariable("id") Long id) {
         return studentService.deleteStudent(id);
     }
 
