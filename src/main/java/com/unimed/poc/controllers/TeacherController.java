@@ -24,7 +24,7 @@ public class TeacherController {
         return teacherService.getAllTeachers();
     }
 
-    @PostMapping("/")
+    @PostMapping("/new")
     public Mono<Teacher> createTeacher(@RequestBody Teacher teacher) {
         return teacherService.createTeacher(teacher);
     }
